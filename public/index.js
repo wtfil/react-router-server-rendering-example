@@ -5,25 +5,52 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Toc = React.createClass({
+	getInitialState: function() {
+		return {
+			data: null
+		};
+	},
+	componentWillMount: function() {
+		fetch('https://nodejs.org/api/index.json').then(function (res) {
+			return res.json();
+		}).then(function (data) {
+			this.setState({
+				data: data
+			});
+		}.bind(this));
+	},
+
 	render: function() {
-	    return <div>Table of content</div>;
+		if (!this.state.data) {
+			return <div>Loading...</div>;
+		}
+		var items = this.state.data.desc.filter(function (item) {
+			return item.type === 'text';
+		});
+
+	    return <ul>
+	    	{items.map(function (item) {
+	    		return <li>
+	    			<Link to={'/doc/' + item.text}>{item.text}</Link>
+	    		</li>;
+	    	})}
+	    </ul>;
 	}
+
 });
 
 var Doc = React.createClass({
 	render: function() {
-	    return <div>Document</div>;
+	    return <div>{this.props.params.id}</div>;
 	}
 });
 
 var App = React.createClass({
 	render: function() {
-		console.log('app');
 		return <div>
 			<h1>App</h1>
 	    	<Link to="toc">toc</Link>
-	    	<Link to="doc">doc</Link>
-	    	<RouteHandler />
+	    	<RouteHandler params={this.props.params}/>
 		</div>;
 	}
 });
@@ -32,15 +59,14 @@ var routes = (
 	<Route location="history">
 		<Route path="/" handler={App}>
 			<Route path="toc" name="toc" handler={Toc} />
-			<Route path="doc" name="doc" handler={Doc} />
+			<Route path="doc/:id" name="doc" handler={Doc} />
 		</Route>
 	</Route>
 );
 
-console.log(Router);
-Router.run(routes, Router.HashLocation, function (Handler) {
+Router.run(routes, Router.HashLocation, function (Handler, props) {
 	React.render(
-		<Handler/>,
+		<Handler params={props.params}/>,
 		document.querySelector('.container')
 	);
 });
