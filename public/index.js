@@ -3,73 +3,8 @@ var Router = require('react-router');
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
-
-var Toc = React.createClass({
-	getInitialState: function() {
-		return {
-			data: null
-		};
-	},
-	componentWillMount: function() {
-		fetch('https://nodejs.org/api/index.json').then(function (res) {
-			return res.json();
-		}).then(function (data) {
-			this.setState({
-				data: data
-			});
-		}.bind(this));
-	},
-
-	render: function() {
-		if (!this.state.data) {
-			return <div>Loading...</div>;
-		}
-		var items = this.state.data.desc.filter(function (item) {
-			return item.type === 'text';
-		});
-
-	    return <ul>
-	    	{items.map(function (item) {
-	    		return <li>
-	    			<Link to={'/doc/' + item.text}>{item.text}</Link>
-	    		</li>;
-	    	})}
-	    </ul>;
-	}
-
-});
-
-var Doc = React.createClass({
-	getInitialState: function() {
-		return {
-			data: null
-		};
-	},
-	componentWillMount: function() {
-		var id = this.props.params.id;
-		var name = id.match(/(\w+)\.html/)[1];
-		var url = 'https://nodejs.org/api/' + name + '.json';
-
-		fetch(url).then(function (res) {
-			return res.json();
-		}).then(function (data) {
-			this.setState({
-				data: data
-			});
-		}.bind(this));
-	},
-	render: function() {
-		if (!this.state.data) {
-			return <div>Loading...</div>;
-		}
-		var methods = this.state.data.modules[0].methods;
-		return <ul>
-			{methods.map(function (method) {
-				return <li>{method.name}</li>
-			})}
-		</ul>;
-	}
-});
+var Toc = require('./Toc');
+var Doc = require('./Doc');
 
 var App = React.createClass({
 	render: function() {
