@@ -5,17 +5,14 @@ var fs = require('fs');
 
 var files = {
     js: {
-        src: 'index.js',
-        dest: 'bundle.js'
+        src: 'public/index.js',
+        dest: 'public/bundle.js'
     }
 };
 
 gulp.task('js', function () {
     return browserify(files.js.src)
         .transform('reactify')
-        .on('error', function (e) {
-        	console.log(e);
-        })
         .bundle()
         .pipe(fs.createWriteStream(files.js.dest))
 });
@@ -30,4 +27,4 @@ gulp.task('js-watch', function () {
     gulp.watch(files.js.src, ['js']);
 });
 
-gulp.task('dev', ['js-watch', 'server']);
+gulp.task('dev', ['js', 'js-watch', 'server']);
