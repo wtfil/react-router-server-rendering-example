@@ -9,9 +9,12 @@ var Doc = require('./Doc');
 var App = React.createClass({
 	render: function() {
 		return <div>
-			<h1>App</h1>
-	    	<Link to="toc">toc</Link>
-	    	<RouteHandler params={this.props.params}/>
+			<div className="page-header"><h1>React test application</h1></div>
+	    <div className="col-md-4">
+				<Link className="btn btn-block btn-primary" to="/">Home</Link>
+				<Link className="btn btn-block btn-primary" to="toc">Load table of content</Link>
+			</div>
+	    <RouteHandler params={this.props.params}/>
 		</div>;
 	}
 });

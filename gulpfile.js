@@ -1,9 +1,9 @@
-var gulp = require('gulp');
 var browserify = require('browserify');
-var server = require('http-server');
-var watchify = require('watchify');
+var gulp = require('gulp');
 var gutil = require('gulp-util');
 var fs = require('fs');
+var server = require('http-server');
+var watchify = require('watchify');
 
 var files = {
     js: {
@@ -22,7 +22,7 @@ gulp.task('js', function () {
 gulp.task('server', function (cb) {
 	var port = process.env.NODE_PORT || 3000;
 	server.createServer().listen(port, cb);
-	console.log('started at', port);
+	console.log('> Started at port: ', port);
 });
 
 gulp.task('js-watch', function () {
@@ -48,9 +48,7 @@ gulp.task('js-watch', function () {
           })
           .pipe(fs.createWriteStream(files.js.dest));
     }
-
     rebundle();
-
 });
 
 gulp.task('dev', ['js', 'js-watch', 'server']);

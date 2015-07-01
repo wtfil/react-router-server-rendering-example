@@ -25,13 +25,13 @@ var Toc = React.createClass({
 			return item.type === 'text';
 		});
 
-	    return <ul>
+	  return <div className="col-md-4" ><ul>
 	    	{items.map(function (item) {
 	    		return <li>
 	    			<Link to={'/doc/' + item.text}>{item.text}</Link>
 	    		</li>;
 	    	})}
-	    </ul>;
+	  </ul></div>;
 	}
 
 });

@@ -25,11 +25,11 @@ var Doc = React.createClass({
 			return <div>Loading...</div>;
 		}
 		var methods = this.state.data.modules[0].methods;
-		return <ul>
+		return <div className="col-md-4" ><ul>
 			{methods.map(function (method) {
-				return <li>{method.name}</li>
+				return <li>{method.name} </li>
 			})}
-		</ul>;
+		</ul></div>;
 	}
 });
 module.exports = Doc;
