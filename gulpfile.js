@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
 var server = require('http-server');
+var watchify = require('watchify');
+var gutil = require('gulp-util');
 var fs = require('fs');
 
 var files = {
@@ -24,7 +26,31 @@ gulp.task('server', function (cb) {
 });
 
 gulp.task('js-watch', function () {
-    gulp.watch(files.js.src, ['js']);
+    var args = watchify.args;
+    args.degub = true;
+    var bundler = watchify(browserify(files.js.src, args));
+
+    bundler.transform('reactify');
+    bundler.on('update', rebundle);
+
+    function onError(e) {
+        gutil.log(gutil.colors.red(e.message));
+    }
+
+    function rebundle() {
+        var start = Date.now();
+
+        return bundler.bundle()
+          .on('error', onError)
+          .on('end', function () {
+              var time = Date.now() - start;
+              gutil.log('Building \'' + gutil.colors.green(files.js.src) + '\' in ' + gutil.colors.magenta(time + ' ms'));
+          })
+          .pipe(fs.createWriteStream(files.js.dest));
+    }
+
+    rebundle();
+
 });
 
 gulp.task('dev', ['js', 'js-watch', 'server']);
