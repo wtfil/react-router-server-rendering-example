@@ -22765,77 +22765,150 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":68}],196:[function(require,module,exports){
-var React = require('react');
-var Link = require('react-router').Link;
+'use strict';
 
-var Doc = React.createClass({displayName: "Doc",
-	getInitialState: function() {
+var React = require('react');
+
+var _require = require('react-router');
+
+var Link = _require.Link;
+
+var Doc = React.createClass({
+	displayName: 'Doc',
+
+	getInitialState: function getInitialState() {
 		return {
 			data: null
 		};
 	},
-	componentWillMount: function() {
-		var id = this.props.params.id;
+	componentWillMount: function componentWillMount() {
+		this.fetch(this.props.params.id);
+	},
+	componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+		this.fetch(newProps.params.id);
+	},
+	fetch: (function (_fetch) {
+		function fetch(_x) {
+			return _fetch.apply(this, arguments);
+		}
+
+		fetch.toString = function () {
+			return _fetch.toString();
+		};
+
+		return fetch;
+	})(function (id) {
+		var _this = this;
+
 		var name = id.match(/(\w+)\.html/)[1];
 		var url = 'https://nodejs.org/api/' + name + '.json';
 
 		fetch(url).then(function (res) {
 			return res.json();
 		}).then(function (data) {
-			this.setState({
+			_this.setState({
 				data: data
 			});
-		}.bind(this));
-	},
-	render: function() {
+		});
+	}),
+	render: function render() {
 		if (!this.state.data) {
-			return React.createElement("div", null, "Loading...");
+			return React.createElement(
+				'div',
+				null,
+				'Loading...'
+			);
 		}
 		var methods = this.state.data.modules[0].methods;
-		return React.createElement("div", {className: "col-xs-6 col-sm-3"}, React.createElement("ul", null, 
-			methods.map(function (method) {
-				return React.createElement("li", null, method.name, " ")
-			})
-		));
+		return React.createElement(
+			'div',
+			{ className: 'col-md-4' },
+			React.createElement(
+				'ul',
+				null,
+				methods.map(function (method) {
+					return React.createElement(
+						'li',
+						null,
+						method.name,
+						' '
+					);
+				})
+			)
+		);
 	}
 });
 module.exports = Doc;
 
 },{"react":195,"react-router":26}],197:[function(require,module,exports){
-var React = require('react');
-var Link = require('react-router').Link;
+'use strict';
 
-var Toc = React.createClass({displayName: "Toc",
-	getInitialState: function() {
+var React = require('react');
+
+var _require = require('react-router');
+
+var Link = _require.Link;
+var RouteHandler = _require.RouteHandler;
+
+var Toc = React.createClass({
+	displayName: 'Toc',
+
+	getInitialState: function getInitialState() {
 		return {
 			data: null
 		};
 	},
-	componentWillMount: function() {
+
+	componentWillMount: function componentWillMount() {
 		fetch('https://nodejs.org/api/index.json').then(function (res) {
 			return res.json();
-		}).then(function (data) {
+		}).then((function (data) {
 			this.setState({
 				data: data
 			});
-		}.bind(this));
+		}).bind(this));
 	},
 
-	render: function() {
+	render: function render() {
 		if (!this.state.data) {
-			return React.createElement("div", null, "Loading...");
+			return React.createElement(
+				'div',
+				null,
+				'Loading...'
+			);
 		}
 		var items = this.state.data.desc.filter(function (item) {
 			return item.type === 'text';
 		});
 
-	  return React.createElement("div", {className: "col-xs-6 col-sm-3"}, React.createElement("ul", null, 
-	    	items.map(function (item) {
-	    		return React.createElement("li", null, 
-	    			React.createElement(Link, {to: '/doc/' + item.text}, item.text)
-	    		);
-	    	})
-	  ));
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(
+				'div',
+				{ className: 'col-md-4' },
+				React.createElement(
+					'ul',
+					null,
+					items.map(function (item) {
+						return React.createElement(
+							'li',
+							null,
+							React.createElement(
+								Link,
+								{ to: '/toc/' + item.text },
+								item.text
+							)
+						);
+					})
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'col-md-4' },
+				React.createElement(RouteHandler, null)
+			)
+		);
 	}
 
 });
@@ -22843,41 +22916,68 @@ var Toc = React.createClass({displayName: "Toc",
 module.exports = Toc;
 
 },{"react":195,"react-router":26}],198:[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
+var RouteHandler = Router.RouteHandler;
+
 var Toc = require('./Toc');
 var Doc = require('./Doc');
 
-var App = React.createClass({displayName: "App",
-	render: function() {
-		return React.createElement("div", null, 
-			React.createElement("div", {className: "page-header"}, React.createElement("h1", null, "React test application")), 
-	    	React.createElement("div", {className: "col-xs-6 col-sm-3"}, 
-					React.createElement(Link, {className: "btn btn-block btn-primary", to: "/"}, "Home"), 
-					React.createElement(Link, {className: "btn btn-block btn-primary", to: "toc"}, "Load table of content")
-				), 
-	    	React.createElement(RouteHandler, {params: this.props.params})
+var App = React.createClass({
+	displayName: 'App',
+
+	render: function render() {
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(
+				'div',
+				{ className: 'page-header' },
+				React.createElement(
+					'h1',
+					null,
+					'React test application'
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'col-md-4' },
+				React.createElement(
+					Link,
+					{ className: 'btn btn-block btn-primary', to: '/' },
+					'Home'
+				),
+				React.createElement(
+					Link,
+					{ className: 'btn btn-block btn-primary', to: 'toc' },
+					'Load table of content'
+				)
+			),
+			React.createElement(RouteHandler, { params: this.props.params })
 		);
 	}
 });
 
-var routes = (
-	React.createElement(Route, {location: "history"}, 
-		React.createElement(Route, {path: "/", handler: App}, 
-			React.createElement(Route, {path: "toc", name: "toc", handler: Toc}), 
-			React.createElement(Route, {path: "doc/:id", name: "doc", handler: Doc})
+var routes = React.createElement(
+	Route,
+	{ location: 'history' },
+	React.createElement(
+		Route,
+		{ path: '/', handler: App },
+		React.createElement(
+			Route,
+			{ path: 'toc', name: 'toc', handler: Toc },
+			React.createElement(Route, { path: ':id', name: 'doc', handler: Doc })
 		)
 	)
 );
 
 Router.run(routes, Router.HashLocation, function (Handler, props) {
-	React.render(
-		React.createElement(Handler, {params: props.params}),
-		document.querySelector('.container')
-	);
+	React.render(React.createElement(Handler, { params: props.params }), document.querySelector('.container'));
 });
 
 },{"./Doc":196,"./Toc":197,"react":195,"react-router":26}]},{},[198]);

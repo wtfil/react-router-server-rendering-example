@@ -14,7 +14,7 @@ var files = {
 
 gulp.task('js', function () {
     return browserify(files.js.src)
-        .transform('reactify')
+        .transform('babelify')
         .bundle()
         .pipe(fs.createWriteStream(files.js.dest))
 });
@@ -30,7 +30,7 @@ gulp.task('js-watch', function () {
     args.degub = true;
     var bundler = watchify(browserify(files.js.src, args));
 
-    bundler.transform('reactify');
+    bundler.transform('babelify');
     bundler.on('update', rebundle);
 
     function onError(e) {

@@ -1,8 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
-var Link = Router.Link;
+var {Route, Link, RouteHandler} = Router;
 var Toc = require('./Toc');
 var Doc = require('./Doc');
 
@@ -22,8 +20,9 @@ var App = React.createClass({
 var routes = (
 	<Route location="history">
 		<Route path="/" handler={App}>
-			<Route path="toc" name="toc" handler={Toc} />
-			<Route path="doc/:id" name="doc" handler={Doc} />
+			<Route path="toc" name="toc" handler={Toc} >
+				<Route path=":id" name="doc" handler={Doc} />
+			</Route>
 		</Route>
 	</Route>
 );

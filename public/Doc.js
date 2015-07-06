@@ -1,5 +1,5 @@
 var React = require('react');
-var Link = require('react-router').Link;
+var {Link} = require('react-router');
 
 var Doc = React.createClass({
 	getInitialState: function() {
@@ -8,17 +8,23 @@ var Doc = React.createClass({
 		};
 	},
 	componentWillMount: function() {
-		var id = this.props.params.id;
+		this.fetch(this.props.params.id);
+	},
+	componentWillReceiveProps: function (newProps) {
+		this.fetch(newProps.params.id);
+	},
+	fetch: function (id) {
 		var name = id.match(/(\w+)\.html/)[1];
 		var url = 'https://nodejs.org/api/' + name + '.json';
 
 		fetch(url).then(function (res) {
 			return res.json();
-		}).then(function (data) {
+		}).then(data => {
 			this.setState({
 				data: data
 			});
-		}.bind(this));
+		});
+
 	},
 	render: function() {
 		if (!this.state.data) {
