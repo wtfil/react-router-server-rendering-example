@@ -1,4 +1,5 @@
 var React = require('react');
+var superagent = require('superagent');
 var {Link, RouteHandler} = require('react-router');
 
 var Toc = React.createClass({
@@ -9,9 +10,8 @@ var Toc = React.createClass({
 	},
 
 	componentWillMount: function() {
-		fetch('https://nodejs.org/api/index.json').then(function (res) {
-			return res.json();
-		}).then(function (data) {
+		superagent.get('https://nodejs.org/api/index.json').end(function (err, data) {
+			console.log(data);
 			this.setState({
 				data: data
 			});

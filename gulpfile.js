@@ -2,7 +2,6 @@ var browserify = require('browserify');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var fs = require('fs');
-var server = require('http-server');
 var watchify = require('watchify');
 
 var files = {
@@ -20,9 +19,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('server', function (cb) {
-	var port = process.env.NODE_PORT || 3000;
-	server.createServer().listen(port, cb);
-	console.log('> Started at port: ', port);
+	require('./server');
 });
 
 gulp.task('js-watch', function () {
