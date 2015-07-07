@@ -35,7 +35,7 @@ var Toc = React.createClass({
 	    		})}
 	  	  </ul></div>
 	  	  <div className="col-md-4">
-	  	  	<RouteHandler />
+		  	  {this.props.children}
 	  	  </div>
 	  </div>;
 
