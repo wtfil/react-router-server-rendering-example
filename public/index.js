@@ -1,6 +1,6 @@
 var React = require('react');
-var Router = require('react-router');
-var {Route, Link, RouteHandler} = Router;
+var {Router, Route, Link} = require('react-router');
+var {history} = require('react-router/lib/BrowserHistory');
 var Toc = require('./Toc');
 var Doc = require('./Doc');
 
@@ -8,28 +8,23 @@ var App = React.createClass({
 	render: function() {
 		return <div>
 			<div className="page-header"><h1>React test application</h1></div>
-	    <div className="col-md-4">
+			<div className="col-md-4">
 				<Link className="btn btn-block btn-primary" to="/">Home</Link>
 				<Link className="btn btn-block btn-primary" to="toc">Load table of content</Link>
 			</div>
-	    <RouteHandler params={this.props.params}/>
+			{this.props.children}
 		</div>;
 	}
 });
 
 var routes = (
-	<Route location="history">
-		<Route path="/" handler={App}>
-			<Route path="toc" name="toc" handler={Toc} >
-				<Route path=":id" name="doc" handler={Doc} />
+	<Router history={history}>
+		<Route path="/" component={App}>
+			<Route path="toc" name="toc" component={Toc} >
+				<Route path=":id" name="doc" component={Doc} />
 			</Route>
 		</Route>
-	</Route>
+	</Router>
 );
 
-Router.run(routes, Router.HashLocation, function (Handler, props) {
-	React.render(
-		<Handler params={props.params}/>,
-		document.querySelector('.container')
-	);
-});
+React.render(routes, document.querySelector('.container'));
