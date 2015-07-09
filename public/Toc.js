@@ -3,6 +3,11 @@ var superagent = require('superagent');
 var {Link, RouteHandler} = require('react-router');
 
 var Toc = React.createClass({
+	statics: {
+		loadProps: function (params, cb) {
+			console.log(params);
+		}
+	},
 	getInitialState: function() {
 		return {
 			data: null
@@ -10,12 +15,14 @@ var Toc = React.createClass({
 	},
 
 	componentWillMount: function() {
-		superagent.get('https://nodejs.org/api/index.json').end(function (err, data) {
-			console.log(data);
-			this.setState({
-				data: data
-			});
-		}.bind(this));
+		superagent
+			.get('https://nodejs.org/api/index.json')
+			.accept('application/json')
+			.end(function (err, res) {
+				this.setState({
+					data: res.body
+				});
+			}.bind(this));
 	},
 
 	render: function() {
