@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var fs = require('fs');
 var watchify = require('watchify');
+var nodemon = require('gulp-nodemon');
 
 var files = {
     js: {
@@ -18,8 +19,12 @@ gulp.task('js', function () {
         .pipe(fs.createWriteStream(files.js.dest))
 });
 
-gulp.task('server', function (cb) {
-	require('./server');
+gulp.task('server', function () {
+	nodemon({
+		script: './server.js',
+		ext: 'js',
+		watch: ['server.js', 'public']
+	});
 });
 
 gulp.task('js-watch', function () {

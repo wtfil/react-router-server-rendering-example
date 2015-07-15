@@ -6,12 +6,10 @@ var routes = require('./public/routes');
 var Router = require('react-router').Router;
 var Location = require('react-router/lib/Location');
 var React = require('react');
+var render = require('./componentWraper');
+var intdexHtml = require('fs').readFileSync('public/index.html', 'utf8');
 
 app.use(express.static('public'));
-
-app.get('/', function(req, res) {
-  	res.send('hello world');
-});
 
 app.use(function (req, res, next) {
 	var location = new Location(req.url, req.query);
@@ -19,8 +17,10 @@ app.use(function (req, res, next) {
 		if (err) {
 			return next(err);
 		}
-		var html = React.renderToString(React.createFactory(Router)(state));
-		res.end(html);
+		render(state, function (err, html) {
+			var page = intdexHtml.replace('{{html}}', html);
+			res.end(page);
+		});
 	});
 });
 

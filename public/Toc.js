@@ -13,8 +13,8 @@ var Toc = React.createClass({
 			superagent
 				.get('https://nodejs.org/api/index.json')
 				.accept('application/json')
-				.end((err, data) => {
-					cb(err, {data: data});
+				.end((err, res) => {
+					cb(err, {data: res.body});
 				});
 		}
 	},

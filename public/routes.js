@@ -23,11 +23,9 @@ var App = React.createClass({
 });
 
 module.exports = (
-	<Route component={AsyncProps}>
-		<Route path="/" component={App}>
-			<Route path="toc" name="toc" component={Toc} >
-				<Route path=":id" name="doc" component={Doc} />
-			</Route>
+	<Route path="/" component={App}>
+		<Route path="toc" name="toc" component={Toc} >
+			<Route path=":id" name="doc" component={Doc} />
 		</Route>
 	</Route>
 );
