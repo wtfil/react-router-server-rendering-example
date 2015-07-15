@@ -14,7 +14,10 @@ var Toc = React.createClass({
 				.get('https://nodejs.org/api/index.json')
 				.accept('application/json')
 				.end((err, res) => {
-					cb(err, {data: res.body});
+					if (err) {
+						return cb(err);
+					}
+					cb(null, {data: res.body});
 				});
 		}
 	},

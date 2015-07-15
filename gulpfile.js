@@ -21,9 +21,9 @@ gulp.task('js', function () {
 
 gulp.task('server', function () {
 	nodemon({
-		script: './server.js',
+		script: './server/index.js',
 		ext: 'js',
-		watch: ['server.js', 'public']
+		watch: ['server', 'public']
 	});
 });
 
