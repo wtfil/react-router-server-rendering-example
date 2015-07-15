@@ -31,7 +31,7 @@ function createMiddleware(opts) {
 
 				try {
 					html = React.renderToString(React.createFactory(Router)(state));
-					page = opts.renderPage(html);
+					page = opts.renderPage(html, asyncProps.propsArray);
 				} catch (err) {
 					return next(err);
 				}
