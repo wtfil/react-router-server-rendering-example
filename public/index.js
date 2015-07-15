@@ -1,10 +1,16 @@
 var React = require('react');
 var {Router, Route, Link} = require('react-router');
-var {history} = require('react-router/lib/BrowserHistory');
+var {history} = require('react-router/lib/HashHistory');
+var AsyncProps = require('react-router/lib/experimental/AsyncProps')['default'];
 var Toc = require('./Toc');
 var Doc = require('./Doc');
 
 var App = React.createClass({
+	statics: {
+	 	loadProps(params, cb) {
+	 	    cb(null);
+	 	}
+	},
 	render: function() {
 		return <div>
 			<div className="page-header"><h1>React test application</h1></div>
@@ -18,10 +24,12 @@ var App = React.createClass({
 });
 
 var routes = (
-	<Router history={history}>
-		<Route path="/" component={App}>
-			<Route path="toc" name="toc" component={Toc} >
-				<Route path=":id" name="doc" component={Doc} />
+	<Router history={history} createElement={AsyncProps.createElement}>
+		<Route component={AsyncProps}>
+			<Route path="/" component={App}>
+				<Route path="toc" name="toc" component={Toc} >
+					<Route path=":id" name="doc" component={Doc} />
+				</Route>
 			</Route>
 		</Route>
 	</Router>
