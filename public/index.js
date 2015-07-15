@@ -4,6 +4,6 @@ var {Router} = require('react-router');
 var {history} = require('react-router/lib/BrowserHistory');
 
 React.render(
-	<Router children={routes} history={history} />,
+	<Router children={routes} history={history} createElement={AsyncProps.createElement}/>,
 	document.querySelector('.container')
 );
