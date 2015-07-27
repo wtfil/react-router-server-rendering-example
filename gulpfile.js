@@ -7,8 +7,8 @@ var nodemon = require('gulp-nodemon');
 
 var files = {
     js: {
-        src: 'public/index.js',
-        dest: 'public/bundle.js'
+        src: 'public/src/index.js',
+        dest: 'public/build/bundle.js'
     }
 };
 
