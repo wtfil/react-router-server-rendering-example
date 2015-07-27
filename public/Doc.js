@@ -1,4 +1,5 @@
 var React = require('react');
+var superagent = require('superagent');
 var {Link} = require('react-router');
 
 var Doc = React.createClass({
@@ -7,12 +8,15 @@ var Doc = React.createClass({
 			var name = params.id.match(/(\w+)\.html/)[1];
 			var url = 'https://nodejs.org/api/' + name + '.json';
 
-			fetch(url)
-				.then(res => res.json())
-				.then(data => {
-					cb(null, {data: data});
-				})
-				.catch(cb);
+			superagent
+				.get(url)
+				.accept('application/json')
+				.end((err, res) => {
+					if (err) {
+						return cb(err);
+					}
+					cb(null, {data: res.body});
+				});
 		}
 	},
 

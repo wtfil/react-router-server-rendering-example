@@ -2,8 +2,8 @@ var browserify = require('browserify');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var fs = require('fs');
-var server = require('http-server');
 var watchify = require('watchify');
+var nodemon = require('gulp-nodemon');
 
 var files = {
     js: {
@@ -19,10 +19,12 @@ gulp.task('js', function () {
         .pipe(fs.createWriteStream(files.js.dest))
 });
 
-gulp.task('server', function (cb) {
-	var port = process.env.NODE_PORT || 3000;
-	server.createServer().listen(port, cb);
-	console.log('> Started at port: ', port);
+gulp.task('server', function () {
+	nodemon({
+		script: './server/index.js',
+		ext: 'js',
+		watch: ['server', 'public']
+	});
 });
 
 gulp.task('js-watch', function () {
