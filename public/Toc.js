@@ -1,4 +1,5 @@
 var React = require('react');
+var superagent = require('superagent');
 var {Link, RouteHandler} = require('react-router');
 
 var Toc = React.createClass({
@@ -9,11 +10,14 @@ var Toc = React.createClass({
 		// asyncProps will be merged with original props into single object
 		// and will be accessable via this.props.*
 		loadProps(params, cb) {
-			fetch('https://nodejs.org/api/index.json')
-				.then(res => res.json())
-				.then(data => {
-					// this.props.data in "render" function
-					cb(null, {data: data});
+			superagent
+				.get('https://nodejs.org/api/index.json')
+				.accept('application/json')
+				.end((err, res) => {
+					if (err) {
+						return cb(err);
+					}
+					cb(null, {data: res.body});
 				});
 		}
 	},
