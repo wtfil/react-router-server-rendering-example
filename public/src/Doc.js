@@ -22,6 +22,9 @@ var Doc = React.createClass({
 
 	render: function() {
 		var methods = this.props.data.modules[0].methods;
+		if (!methods) {
+			return <h3>No modules</h3>;
+		}
 		return <div className="col-md-4" ><ul>
 			{methods.map(function (method) {
 				return <li>{method.name} </li>

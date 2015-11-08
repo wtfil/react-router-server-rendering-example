@@ -23,6 +23,9 @@ var Toc = React.createClass({
 	},
 
 	render: function() {
+		if (!this.props.data) {
+			return <h3>Sorry, no table of content</h3>;
+		}
 		var items = this.props.data.desc.filter(function (item) {
 			return item.type === 'text';
 		});

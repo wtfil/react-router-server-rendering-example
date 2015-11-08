@@ -12,6 +12,9 @@ function createMiddleware(opts) {
 			if (err) {
 				return next(err);
 			}
+			if (!state) {
+				return next();
+			}
 
 			AsyncProps.hydrate(state, function (err, asyncProps) {
 				if (err) {
